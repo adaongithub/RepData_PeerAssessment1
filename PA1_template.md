@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 
@@ -17,7 +12,8 @@ The variables included in this dataset are:
 
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
-```{r}
+
+```r
 # Data Science Certificate - Reproducible Research
 # Project 1
 # Alec Dara-Abrams
@@ -37,13 +33,12 @@ activity_df   <- read.csv( activity_file, header=TRUE )
 activity_df$steps     <- as.numeric( activity_df$steps ) 
 activity_df$date      <- as.factor( activity_df$date ) 
 activity_df$interval  <- as.factor( activity_df$interval ) 
-
-
 ```
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 # ======================================================================
 ## What is mean total number of steps taken per day?
 
@@ -69,24 +64,25 @@ hist( daily_steps_num, 10,
       xlab="Total Number of Steps Taken Each Day",
       ylim=c( 0, 25 ) # same limits as in second histogram below for comparison
     )
-
 ```
 
-```{r, echo=FALSE}
-#> Report the mean and the median of the total steps taken each day
-cat("The mean and median number of the total number of steps taken per day:\n",
-   ( "(Note, NAs are ignored for this computation.)\n" ),
-   ( paste0( "   Mean:     ", round(mean_dsn,   digits=2), "\n" ) ),
-   ( paste0( "   Median:   ", round(median_dsn, digits=2), "\n" ) ),
-   ( paste0( "   Num Days: ", num_days, "\n") ),
-   ( "\n" )
-   )
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+
+```
+## The mean and median number of the total number of steps taken per day:
+##  (Note, NAs are ignored for this computation.)
+##     Mean:     10766.19
+##     Median:   10765
+##     Num Days: 61
+## 
 ```
 
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 # ======================================================================
 ## What is the average daily activity pattern?
 
@@ -112,7 +108,11 @@ plot( time_of_day_in_minutes,
       ylab="Steps",
       ylim=c( 0, 220)
     )
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+
+```r
 # Get maximum step count for any interval in the average day
 max_steps <- max(interval_steps_num)
 
@@ -133,20 +133,15 @@ hits_max_time_of_day_mins  <- the_max_interval * 5
 hits_max_time_of_day_HH    <- hits_max_time_of_day_mins %/% 60
 hits_max_time_of_day_MM    <- hits_max_time_of_day_mins %%  60
 time_of_max <- paste0( hits_max_time_of_day_HH, ":", hits_max_time_of_day_MM )
-
 ```
 
-```{r, echo=FALSE}
-#> Report which 5-minute interval, on average across all the days in the
-#> dataset contains the maximum number of steps.
-cat( "On average across all the days in the dataset the maximum number of\n",
-   ( paste0( "steps is contained in the 5-minute interval starting at ",
-               time_of_max, " (24-hour time).\n" ) ),
-   ( "\n" ),
-   ( paste0( "The maximum number of steps in this 5-minute interval is: ",
-               round(max_steps, digits=2), "\n" ) ),
-   ( "\n" )
-   )
+
+```
+## On average across all the days in the dataset the maximum number of
+##  steps is contained in the 5-minute interval starting at 8:40 (24-hour time).
+##  
+##  The maximum number of steps in this 5-minute interval is: 206.17
+## 
 ```
 
 
@@ -162,7 +157,8 @@ Adding imputed date values *does* modify the histogram of total daily steps.
 The peak value is higher but the overall distribution looks the same as
 for the case without the imputed data.
 
-```{r}
+
+```r
 # ======================================================================
 ## Imputing missing values
 
@@ -172,12 +168,13 @@ NA_row_indices <- which( is.na( activity_df$steps ) )
 total_num_rows_with_NA <- length( NA_row_indices )
 ```
 
-```{r, echo=FALSE}
-cat( "In the input data there are", total_num_rows_with_NA,
-     "rows with a missing step value (indicated by NA).\n\n" )
+
+```
+## In the input data there are 2304 rows with a missing step value (indicated by NA).
 ```
 
-```{r}
+
+```r
 #> We will modify the input data in data frame activity_df by replacing
 #> any missing step value for, say, date=d and interval=intvl, with
 #> the step value from the corresponding interval in the average daily
@@ -215,18 +212,22 @@ hist( daily_steps_num_WID, 10,
       xlab="Total Number of Steps Taken Each Day",
       ylim=c( 0, 25 ) # same limits as in first histogram above for comparison
     )
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+
+```r
 #> Report the mean and the median of the total steps taken each day
 ```
 
-```{r, echo=FALSE}
-cat("The mean and median number of the total number of steps taken per day:\n",
-   ("(Note, NAs have been replaced with imputed data for this computation.)\n"),
-   ( paste0( "   Mean:     ", round(mean_dsn_WID,   digits=2), "\n" ) ),
-   ( paste0( "   Median:   ", round(median_dsn_WID, digits=2), "\n" ) ),
-   ( paste0( "   Num Days: ", num_days_WID, "\n") ),
-   ( "\n" )
-   )
+
+```
+## The mean and median number of the total number of steps taken per day:
+##  (Note, NAs have been replaced with imputed data for this computation.)
+##     Mean:     10766.19
+##     Median:   10766.19
+##     Num Days: 61
+## 
 ```
 
 
@@ -237,7 +238,8 @@ of the steps concentrated during what may be a morning work out activity,
 walk or run.  However, week end activity is much more spread out over the day.
 
 
-```{r, fig.height=8}
+
+```r
 # ======================================================================
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -297,8 +299,11 @@ plot( time_of_day_in_minutes,
       ylab="Steps",
       ylim=c( 0, 250) # same limits as in time series plot above for comparison
     )
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
+
+```r
 # ======================================================================
-
 ```
 
